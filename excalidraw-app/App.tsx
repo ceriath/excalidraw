@@ -76,7 +76,7 @@ import {
 import { updateStaleImageStatuses } from "./data/FileManager";
 import { newElementWith } from "../packages/excalidraw/element/mutateElement";
 import { isInitializedImageElement } from "../packages/excalidraw/element/typeChecks";
-import { loadFilesFromFirebase } from "./data/firebase";
+import { loadFilesFromStorage } from "./data/storage";
 import {
   LibraryIndexedDBAdapter,
   LibraryLocalStorageMigrationAdapter,
@@ -400,7 +400,7 @@ const ExcalidrawWrapper = () => {
           }, [] as FileId[]) || [];
 
         if (data.isExternalScene) {
-          loadFilesFromFirebase(
+          loadFilesFromStorage(
             `${FIREBASE_STORAGE_PREFIXES.shareLinkFiles}/${data.id}`,
             data.key,
             fileIds,

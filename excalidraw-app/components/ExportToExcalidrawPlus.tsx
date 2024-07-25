@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "../../packages/excalidraw/components/Card";
 import { ToolButton } from "../../packages/excalidraw/components/ToolButton";
 import { serializeAsJSON } from "../../packages/excalidraw/data/json";
-import { loadFirebaseStorage, saveFilesToFirebase } from "../data/firebase";
+import { loadStorage, saveFilesToStorage } from "../data/storage";
 import type {
   FileId,
   NonDeletedExcalidrawElement,
@@ -32,7 +32,7 @@ export const exportToExcalidrawPlus = async (
   files: BinaryFiles,
   name: string,
 ) => {
-  const firebase = await loadFirebaseStorage();
+  const storage = await loadStorage();
 
   const id = `${nanoid(12)}`;
 
@@ -49,7 +49,7 @@ export const exportToExcalidrawPlus = async (
     },
   );
 
-  await firebase
+  await storage
     .storage()
     .ref(`/migrations/scenes/${id}`)
     .put(blob, {
@@ -73,7 +73,7 @@ export const exportToExcalidrawPlus = async (
       maxBytes: FILE_UPLOAD_MAX_BYTES,
     });
 
-    await saveFilesToFirebase({
+    await saveFilesToStorage({
       prefix: `/migrations/files/scenes/${id}`,
       files: filesToUpload,
     });
